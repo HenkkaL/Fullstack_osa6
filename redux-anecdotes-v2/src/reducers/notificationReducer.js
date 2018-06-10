@@ -1,26 +1,26 @@
 const notificationReducer = (state = null, action) => {
   switch (action.type) {
-  case 'VOTE':
-    return `You voted: ${action.anecdote.content}`
-  case 'CREATE':
-    return `you added new anecdote ${action.content}`
-  case 'CLEAR':
-    return ''
+  case 'NOTIFY':
+    return action.content
+  case 'CLEAR': {
+    return null
+  }
   default:
     return state
   }
 }
 
-export const clearNotification = () => {
-  return {
-    type: 'CLEAR'
-  }
-}
-
-export const notification = (anecdote) => {
-  return {
-    type: 'SET_NOTIFICATION',
-    anecdote
+export const notify = (content, delay) => {
+  return (dispatch) => {
+    dispatch ({
+      type: 'NOTIFY',
+      content
+    })
+    setTimeout(() => {
+      dispatch ({
+        type: 'CLEAR'
+      })
+    }, delay*1000)
   }
 }
 
