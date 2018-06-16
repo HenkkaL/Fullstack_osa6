@@ -1,11 +1,11 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
 
 const Menu = () => (
-  <div>    
-    <Link to='/'>anecdotes</Link>&nbsp;
-    <Link to='/create'>create new</Link>&nbsp;
-    <Link to='/about'>about</Link>&nbsp;
+  <div style={menuStyle}>    
+    <NavLink  activeStyle={{fontWeight: 'bold'}} exact to='/'>anecdotes</NavLink>&nbsp;
+    <NavLink activeStyle={{fontWeight: 'bold'}} exact to='/create'>create new</NavLink>&nbsp;
+    <NavLink activeStyle={{fontWeight: 'bold'}} exact to='/about'>about</NavLink>&nbsp;
   </div>
 )
 
@@ -103,6 +103,7 @@ class CreateNew extends React.Component {
   }
 }
 
+
 class App extends React.Component {
   constructor() {
     super()
@@ -151,14 +152,20 @@ class App extends React.Component {
     this.setState({ anecdotes })
   }
 
+  
+
   render() {
+    const notificationVisibility = { display: this.state.notification === '' ? 'none' : '' }
+    console.log(this.state.notification)
     return (
       <div>
         <Router>
           <div>
             <h1>Software anecdotes</h1>
             <Menu />
-            <div>{this.state.notification}</div>
+            <div style={notificationVisibility}>
+              <div style={notificationStyle}>{this.state.notification}</div>
+            </div>
             <Route exact path="/" render={() => <AnecdoteList anecdotes={this.state.anecdotes} />} />
             <Route path="/about" render={() => <About />} />
             <Route path="/create" render={({history}) => <CreateNew history={history} addNew={this.addNew} />} />
@@ -171,6 +178,22 @@ class App extends React.Component {
       </div>
     );
   }
+}
+
+const notificationStyle = {
+  color: 'green',
+  fontSize: 16,
+  borderStyle: 'solid',
+  borderWidth: 1,
+  borderRadius: 5,
+  padding: 10,
+  margin: 5
+}
+
+const menuStyle = {
+  backgroundColor: 'lightblue',
+  padding: 10,
+  margin: 5
 }
 
 export default App;
